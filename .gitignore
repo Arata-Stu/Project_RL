@@ -2,7 +2,7 @@ gym_env
 rl_env
 outputs
 runs
-data
+datasets/
 ckpts/
 # Byte-compiled / optimized / DLL files
 __pycache__/
