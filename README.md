@@ -38,6 +38,8 @@ python3 collect_data.py \
 ### 2-1. スクラッチからCOCOで学習
 ```shell
 python3 train_vae.py \
+data=img \
+vae=cnn \
 save_ckpt_dir=./ckpts/scratch_cnn_vae/ \
 data.data_dir=./data/car_racing/ \
 ```
