@@ -61,6 +61,8 @@ def main(config: DictConfig):
     
     # モデルの作成
     model = VAETrainer(vae_cfg=config.vae, learning_rate=config.learning_rate)
+    if config.vae.ckpt_path is not None:
+        model = model.load_from_checkpoint(config.vae.ckpt_path)
 
     # チェックポイントの設定 (Top 3 の val_loss のモデルを保存)
     checkpoint_callback = ModelCheckpoint(
