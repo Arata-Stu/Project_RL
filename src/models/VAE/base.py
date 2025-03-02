@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from typing import Tuple
-from src.utils.timers import Timer as Timer
+from src.utils.timers import CudaTimer as Timer
 # from src.utils.timers import TimerDummy as Timer
 
 class BaseVAE(nn.Module):
@@ -19,16 +19,17 @@ class BaseVAE(nn.Module):
         raise NotImplementedError
     
     def latent(self, mu: torch.Tensor, logvar: torch.Tensor) -> torch.Tensor:
-        with Timer("latent"):
+        with Timer(device=mu.device, timer_name="latent"):
             sigma = torch.exp(0.5 * logvar)
             eps = torch.randn_like(logvar).to(self.device)
             z = mu + eps * sigma
         return z
     
     def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        mu, logvar = self.encode(x)
-        z = self.latent(mu, logvar)
-        out = self.decode(z)
+        with Timer(device=x.device, timer_name="encode + decode"):
+            mu, logvar = self.encode(x)
+            z = self.latent(mu, logvar)
+            out = self.decode(z)
         return out, mu, logvar
     
     def vae_loss(self, out, y, mu, logvar):

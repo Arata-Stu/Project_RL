@@ -29,8 +29,8 @@ stage:
   num_blocks: [2, 2, 2, 2] ## Number of blocks in each stage
 
   transformer:
-    window_size: ???
-    grid_size: ???
+    window_size: null
+    grid_size: null
     partition_ratio: 32
     dim_head: 16
     attn_bias: True

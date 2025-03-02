@@ -2,7 +2,7 @@ from typing import Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from src.utils.timers import Timer as Timer
+from src.utils.timers import CudaTimer as Timer
 # from src.utils.timers import TimerDummy as Timer
 
 from .base import BaseVAE
@@ -29,7 +29,7 @@ class CNN_VAE(BaseVAE):
         self.dec_conv4 = nn.ConvTranspose2d(32, input_shape[0], kernel_size=4, stride=2, padding=1)
 
     def encode(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        with Timer("encode"):
+        with Timer(device=x.device, timer_name="encode"):
             batch_size = x.shape[0]
             out = F.relu(self.enc_conv1(x))
             out = F.relu(self.enc_conv2(out))
@@ -42,7 +42,7 @@ class CNN_VAE(BaseVAE):
         return mu, logvar
 
     def decode(self, z: torch.Tensor) -> torch.Tensor:
-        with Timer("decode"):
+        with Timer(device=z.device, timer_name="decode"):
             batch_size = z.shape[0]
             out = self.dec_fc(z)
             out = out.view(batch_size, 256, self.feature_size, self.feature_size)
