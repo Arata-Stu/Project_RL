@@ -32,14 +32,14 @@ class VAETrainer(pl.LightningModule):
         """
         rec_loss = F.mse_loss(recon_x * (1 - mask), x * (1 - mask), reduction='sum')
         rec_loss = rec_loss / (1 - mask).sum()
-        kl_loss = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp()) / x.shape[0]
+        kl_loss = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp()) 
         return rec_loss + kl_loss, rec_loss, kl_loss
 
     def training_step(self, batch, batch_idx):
         x = batch
         if self.mask_enabled:
             # マスク学習の場合
-            masked_x, mask = mask_patches(x, mask_ratio=0.75, patch_size=16)
+            masked_x, mask = self.mask_patches(x, mask_ratio=0.75, patch_size=16)
             recon_x, mu, log_var = self.model(masked_x)
             loss, rec_loss, kl_loss = self.masked_loss_function(recon_x, x, mask, mu, log_var)
         else:
@@ -55,7 +55,7 @@ class VAETrainer(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         x = batch
         if self.mask_enabled:
-            masked_x, mask = mask_patches(x, mask_ratio=0.75, patch_size=16)
+            masked_x, mask = self.mask_patches(x, mask_ratio=0.75, patch_size=16)
             recon_x, mu, log_var = self.model(masked_x)
             loss, rec_loss, kl_loss = self.masked_loss_function(recon_x, x, mask, mu, log_var)
         else:
