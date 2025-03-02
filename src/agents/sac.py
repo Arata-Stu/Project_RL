@@ -3,8 +3,8 @@ import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np  
 
-from models.Actor.actor import ActorSAC
-from models.Critic.critic import Critic
+from src.models.Actor.actor import ActorSAC
+from src.models.Critic.critic import Critic
 from .base import BaseAgent
 
 class SACAgent(BaseAgent):
