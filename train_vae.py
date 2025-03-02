@@ -120,7 +120,8 @@ def main(config: DictConfig):
         accelerator="gpu" if torch.cuda.is_available() else "cpu",
         log_every_n_steps=10,
         callbacks=[checkpoint_callback],
-        logger=logger
+        logger=logger,
+        gradient_clip_val=1.0
     )
     
     trainer.fit(model, train_dataloaders=data.train_dataloader(), val_dataloaders=data.val_dataloader())
