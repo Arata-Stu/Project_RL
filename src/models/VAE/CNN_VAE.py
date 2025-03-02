@@ -33,7 +33,7 @@ class CNN_VAE(BaseVAE):
             self.load_weights(path=cnn_cfg.ckpt_path)
 
     def encode(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        with Timer(device=x.device, timer_name="encode"):
+        with Timer(device=x.device, timer_name="VAE: encode"):
             batch_size = x.shape[0]
             out = F.relu(self.enc_conv1(x))
             out = F.relu(self.enc_conv2(out))
@@ -46,7 +46,7 @@ class CNN_VAE(BaseVAE):
         return mu, logvar
 
     def decode(self, z: torch.Tensor) -> torch.Tensor:
-        with Timer(device=z.device, timer_name="decode"):
+        with Timer(device=z.device, timer_name="VAE: decode"):
             batch_size = z.shape[0]
             out = self.dec_fc(z)
             out = out.view(batch_size, 256, self.feature_size, self.feature_size)

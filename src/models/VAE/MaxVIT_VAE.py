@@ -53,7 +53,7 @@ class MaxVIT_VAE(BaseVAE):
         
         
     def encode(self, x):
-        with Timer(device=x.device, timer_name="encode"):
+        with Timer(device=x.device, timer_name="VAE: encode"):
             z = self.encoder(x)            # 出力形状: (B, C, H, W)
             z = self.flatten(z)            # (B, C*H*W)
             mu = self.fc_mu(z)             # (B, latent_dim)
@@ -61,7 +61,7 @@ class MaxVIT_VAE(BaseVAE):
         return mu, log_var
 
     def decode(self, z):
-        with Timer(device=z.device, timer_name="decode"):
+        with Timer(device=z.device, timer_name="VAE: decode"):
             z = self.fc_decode(z)                  # (B, C*H*W)
             z = z.view(-1, *self.latent_shape)       # (B, C, H, W)
             x_recon = self.decoder(z)
@@ -69,7 +69,7 @@ class MaxVIT_VAE(BaseVAE):
         return x_recon
 
     def forward(self, x):
-        with Timer(device=x.device, timer_name="encode + decode"):
+        with Timer(device=x.device, timer_name="VAE: encode + decode"):
             mu, log_var = self.encode(x)
             # BaseVAE の latent() を利用して再パラメータ化を実施
             z = self.latent(mu, log_var)

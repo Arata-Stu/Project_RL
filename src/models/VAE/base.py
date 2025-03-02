@@ -18,14 +18,20 @@ class BaseVAE(nn.Module):
         raise NotImplementedError
     
     def latent(self, mu: torch.Tensor, logvar: torch.Tensor) -> torch.Tensor:
-        with Timer(device=mu.device, timer_name="latent"):
+        with Timer(device=mu.device, timer_name="VAE: latent"):
             sigma = torch.exp(0.5 * logvar)
             eps = torch.randn_like(logvar).to(self.device)
             z = mu + eps * sigma
         return z
     
+    def obs_to_z(self, x: torch.Tensor) -> torch.Tensor:
+        with Timer(device=x.device, timer_name="VAE: obs_to_z"):
+            mu, logvar = self.encode(x)
+            z = self.latent(mu, logvar)
+        return z
+
     def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        with Timer(device=x.device, timer_name="encode + decode"):
+        with Timer(device=x.device, timer_name="VAE: encode + decode"):
             mu, logvar = self.encode(x)
             z = self.latent(mu, logvar)
             out = self.decode(z)
