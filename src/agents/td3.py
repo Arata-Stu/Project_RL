@@ -3,8 +3,8 @@ import torch.optim as optim
 import torch.nn.functional as F
 import numpy as np
 
-from models.Actor.actor import ActorTD3
-from models.Critic.critic import Critic
+from src.models.Actor.actor import ActorTD3
+from src.models.Critic.critic import Critic
 from .base import BaseAgent
 
 
