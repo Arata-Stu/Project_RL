@@ -3,8 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.nn.init as init
 
-from utils.timers import Timer as Timer
-# from utils.timers import TimerDummy as Timer
+from src.utils.timers import CudaTimer as Timer
+# from src.utils.timers import TimerDummy as Timer
 
 class Critic(nn.Module):
     def __init__(self, state_dim: int, action_dim: int, hidden_dim: int=256):
@@ -22,7 +22,7 @@ class Critic(nn.Module):
         self.apply(self._initialize_weights)
 
     def forward(self, state: torch.Tensor, action: torch.Tensor) -> torch.Tensor:
-        with Timer("Critic.forward"):
+        with Timer(device=state.device, timer_name="Critic.forward"):
             xu = torch.cat([state, action], dim=1)
             x1 = F.relu(self.fc1(xu))
             x1 = F.relu(self.fc2(x1))
