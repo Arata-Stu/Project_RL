@@ -11,7 +11,7 @@ def get_data_module(data_cfg: DictConfig):
                               img_size=data_cfg.img_size,
                               batch_size=data_cfg.batch_size,
                               num_workers=data_cfg.num_workers)
-    elif data_cfg.name == "img":
+    elif data_cfg.name == "gym":
         print(f"Loading data module for {data_cfg.name} dataset")
         return DataModule(data_dir=data_cfg.data_dir,
                           batch_size=data_cfg.batch_size,
