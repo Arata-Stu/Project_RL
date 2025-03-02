@@ -54,3 +54,9 @@ save_ckpt_dir=./ckpts/<ckpt_dir_name>/ \
 data.data_dir=./datasets/<dataset_name>/ \
 data.num_workers=10 
 ```
+
+### 評価
+```shell
+cd test
+python3 test_vae.py +vae=cnn.yaml +mode=manual vae.ckpt_path=<ckpt_path>
+```
