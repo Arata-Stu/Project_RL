@@ -36,8 +36,7 @@ class VAETrainer(pl.LightningModule):
         ※ (1 - mask) がマスク部分を表す（mask: 非マスク部分が1, マスク部分が0）
         """
         rec_loss = F.mse_loss(recon_x * (1 - mask), x * (1 - mask), reduction='sum')
-        rec_loss = rec_loss / (1 - mask).sum()
-        kl_loss = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp()) 
+        kl_loss = -0.5 * torch.mean(1 + log_var - mu.pow(2) - log_var.exp()) 
         return rec_loss + kl_loss, rec_loss, kl_loss
 
     def training_step(self, batch, batch_idx):
