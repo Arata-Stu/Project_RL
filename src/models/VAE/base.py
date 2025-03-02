@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from typing import Tuple
 from src.utils.timers import CudaTimer as Timer
-# from src.utils.timers import TimerDummy as Timer
 
 class BaseVAE(nn.Module):
     def __init__(self, latent_dim: int, input_shape: Tuple[int, int, int] = (3, 64, 64)):
@@ -38,5 +37,35 @@ class BaseVAE(nn.Module):
         return BCE + KL, BCE, KL
     
     def get_latent_size(self):
-        
         return self.latent_size
+    
+    def load_weights(self, path: str, strict: bool = True):
+        """
+        指定されたパスから重みをロードする。
+        .pth ファイルと .ckpt ファイルの両方に対応。
+
+        Args:
+            path (str): 重みファイルのパス
+            strict (bool): strict モードでロードするかどうか
+        """
+        if path.endswith(".pth"):
+            # PyTorch 標準の state_dict をロード
+            state_dict = torch.load(path, map_location=self.device)
+            self.load_state_dict(state_dict, strict=strict)
+            print(f"Loaded .pth weights from {path}")
+        
+        elif path.endswith(".ckpt"):
+            # PyTorch Lightning のチェックポイント
+            checkpoint = torch.load(path, map_location=self.device)
+            if "state_dict" in checkpoint:
+                state_dict = checkpoint["state_dict"]
+                # Lightning の state_dict には "model." というプレフィックスがついていることがある
+                new_state_dict = {k.replace("model.", ""): v for k, v in state_dict.items()}
+                self.load_state_dict(new_state_dict, strict=strict)
+                print(f"Loaded .ckpt weights from {path}")
+            else:
+                raise ValueError(f"Invalid .ckpt file format: {path}")
+        
+        else:
+            raise ValueError(f"Unsupported file format: {path}")
+

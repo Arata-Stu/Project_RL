@@ -47,6 +47,9 @@ class MaxVIT_VAE(BaseVAE):
 
         # デコーダの初期化
         self.decoder = MaxxVitDecoder(maxvit_cfg, in_chans=encoder_out_chs, input_size=encoder_out_size)
+
+        if maxvit_cfg.ckpt_path:
+            self.load_weights(maxvit_cfg.ckpt_path)
         
         
     def encode(self, x):
