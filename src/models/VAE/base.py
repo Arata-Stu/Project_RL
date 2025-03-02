@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from typing import Tuple
 from src.utils.timers import CudaTimer as Timer
+# from src.utils.timers import TimerDummy as Timer
 
 class BaseVAE(nn.Module):
     def __init__(self, latent_dim: int, input_shape: Tuple[int, int, int] = (3, 64, 64)):
