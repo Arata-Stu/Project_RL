@@ -60,7 +60,7 @@ class VAETrainer(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         x = batch
         if self.mask_enabled:
-            masked_x, mask = self.mask_patches(x, mask_ratio=0.75, patch_size=16)
+            masked_x, mask = self.mask_patches(x)
             recon_x, mu, log_var = self.model(masked_x)
             loss, rec_loss, kl_loss = self.masked_loss_function(recon_x, x, mask, mu, log_var)
         else:
