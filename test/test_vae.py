@@ -47,9 +47,9 @@ def main(config: DictConfig):
 
     # 動画出力の設定（必要な場合のみ）
     if save_video:
-        video_filename = "car_racing_output.avi"
+        video_filename = "car_racing_output.mp4"
         frame_size = (width * 2, height)  # 入力画像と再構成画像を横に並べるため width * 2
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         video_writer = cv2.VideoWriter(video_filename, fourcc, 30.0, frame_size)
 
     while not done:
