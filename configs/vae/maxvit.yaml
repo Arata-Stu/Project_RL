@@ -1,6 +1,6 @@
 name: maxvit_vae
 type: attn
-ckpt_path: null
+ckpt_path: ???
 
 latent_dim: 64
 input_shape: [3, 64, 64]
