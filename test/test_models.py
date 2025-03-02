@@ -4,10 +4,11 @@ import torch
 from omegaconf import OmegaConf
 from src.models.VAE.VAE import get_vae
 
-def test_vae(yaml_path: str, name:str = "vae" ):
+def test_vae(yaml_path: str, name: str = "vae"):
     cfg = OmegaConf.load(yaml_path)
     model = get_vae(cfg)
-    dummy_input = torch.rand(1, 3, 64, 64)
+    ch, heifht, width = cfg.vae.input_shape
+    dummy_input = torch.rand(1, ch, heifht, width)
     x_recon, mu, log_var = model(dummy_input)
     loss, recon_loss, kl_loss = model.vae_loss(dummy_input, x_recon, mu, log_var)
     ## log にnameを含める. shapeの確認も追加
