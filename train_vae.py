@@ -24,9 +24,10 @@ class VAETrainer(pl.LightningModule):
         self.learning_rate = learning_rate
         self.mask_enabled = mask_enabled
         self.mask_patches = partial(mask_patches, mask_ratio=mask_ratio, patch_size=patch_size)
-        print("mask_enabled:", mask_enabled)
-        print("mask_ratio:", mask_ratio)
-        print("patch_size:", patch_size)
+        if mask_enabled:
+            print("mask_enabled:", mask_enabled)
+            print("mask_ratio:", mask_ratio)
+            print("patch_size:", patch_size)
 
     def masked_loss_function(self, recon_x, x, mask, mu, log_var):
         """
