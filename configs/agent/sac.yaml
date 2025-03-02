@@ -8,4 +8,4 @@ alpha_lr: 1e-4
 gamma: 0.99
 tau: 0.005
 hidden_dim: 128
-ckpt_path: ???
+ckpt_path: null

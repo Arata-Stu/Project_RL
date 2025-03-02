@@ -19,7 +19,8 @@ class TD3Agent(BaseAgent):
                  hidden_dim: float=256,
                  policy_noise: float=0.2,
                  noise_clip: float=0.5,
-                 policy_delay: float=2):
+                 policy_delay: float=2,
+                 ckpt_path: str=None):
         """
         TD3エージェントの初期化
         - `policy_noise`: ターゲットポリシーのノイズ
@@ -44,6 +45,9 @@ class TD3Agent(BaseAgent):
         self.policy_delay = policy_delay
 
         self.total_iterations = 0  # Actorの更新を制御するためにカウント
+
+        if ckpt_path:
+            self.load(ckpt_path)
 
     def select_action(self, state: torch.Tensor, evaluate: bool=False):
         """

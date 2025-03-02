@@ -11,7 +11,8 @@ def get_agents(agent_cfg: DictConfig, state_dim: int, action_dim: int):
                         alpha_lr=agent_cfg.alpha_lr,
                         gamma=agent_cfg.gamma,
                         tau=agent_cfg.tau,
-                        hidden_dim=agent_cfg.hidden_dim)
+                        hidden_dim=agent_cfg.hidden_dim,
+                        ckpt_path=agent_cfg.ckpt_path)
     elif agent_cfg.name == "TD3":
         return TD3Agent(state_dim=state_dim,
                         action_dim=action_dim,
@@ -22,7 +23,8 @@ def get_agents(agent_cfg: DictConfig, state_dim: int, action_dim: int):
                         hidden_dim=agent_cfg.hidden_dim,
                         policy_noise=agent_cfg.policy_noise,
                         noise_clip=agent_cfg.noise_clip,
-                        policy_delay=agent_cfg.policy_delay)
+                        policy_delay=agent_cfg.policy_delay,
+                        ckpt_path=agent_cfg.ckpt_path)
     
     else:
         raise NotImplementedError(f"Unknown agent: {agent_cfg.name}")
