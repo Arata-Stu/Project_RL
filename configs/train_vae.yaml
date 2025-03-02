@@ -10,6 +10,6 @@ num_workers: 4
 
 mask_enabled: False
 mask_ratio: 0.5
-patch_size: 16
+patch_size: 1
 log_dir: ./logs
 save_ckpt_dir: ???

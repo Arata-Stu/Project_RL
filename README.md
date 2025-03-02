@@ -30,6 +30,7 @@ data=img \
 vae=cnn \
 save_ckpt_dir=./ckpts/scratch_cnn_vae/ \
 data.data_dir=./data/car_racing/ 
+data.num_workers=10 
 ```
 
 ### 2-2. gym環境のデータを用いてVAEを学習
