@@ -1,7 +1,7 @@
 defaults:
   - default
 
-name: img
+name: gym
 data_dir: ???
 train_ratio: 0.8
 img_size: 64

@@ -21,8 +21,20 @@ python3.11 -m venv gym_env
 source gym_env/bin/activate
 ```
 
-## 1. VAEを学習させるためのデータセットを集める
+## 2. VAEを学習させる
 
+### 2-1. スクラッチからCOCOで学習
+```shell
+python3 train_vae.py \
+data=img \
+vae=cnn \
+save_ckpt_dir=./ckpts/scratch_cnn_vae/ \
+data.data_dir=./data/car_racing/ 
+```
+
+### 2-2 gym環境のデータを用いてVAEを学習
+
+### データを集める
 ```shell
 python3 collect_data.py \
 --mode random \
@@ -33,13 +45,12 @@ python3 collect_data.py \
 --render human
 ```
 
-## 2. VAEを学習させる
-
-### 2-1. スクラッチからCOCOで学習
+### 集めたデータで学習
 ```shell
 python3 train_vae.py \
-data=img \
 vae=cnn \
-save_ckpt_dir=./ckpts/scratch_cnn_vae/ \
-data.data_dir=./data/car_racing/ \
+data=gym \
+save_ckpt_dir=./ckpts/<ckpt_dir_name>/ \
+data.data_dir=./datasets/<dataset_name>/ \
+data.num_workers=10 
 ```
