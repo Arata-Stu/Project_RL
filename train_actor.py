@@ -7,12 +7,12 @@ import gymnasium as gym
 from gymnasium.wrappers import TimeLimit
 import os
 
-from envs.car_racing import CarRacingWithInfoWrapper
-from agents.agents import get_agents
-from buffers.buffers import get_buffers
-from models.VAE.VAE import get_vae
-from utils.helppers import numpy2img_tensor
-from utils.timers import Timer as Timer
+from src.envs.car_racing import CarRacingWithInfoWrapper
+from src.agents.agents import get_agents
+from src.buffers.buffers import get_buffers
+from src.models.VAE.VAE import get_vae
+from src.utils.helppers import numpy2img_tensor
+from src.utils.timers import Timer as Timer
 # from utils.timers import TimerDummy as Timer
 
 @hydra.main(config_path='configs', config_name='train', version_base='1.2')
