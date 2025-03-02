@@ -86,7 +86,7 @@ class VAETrainer(pl.LightningModule):
     def configure_optimizers(self):
         return torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
 
-@hydra.main(config_path="configs", config_name="train_vae", version_base="1.2")
+@hydra.main(config_path="config", config_name="train_vae", version_base="1.2")
 def main(config: DictConfig):
     OmegaConf.to_container(config, resolve=True, throw_on_missing=True)
     print("------ Configuration ------")

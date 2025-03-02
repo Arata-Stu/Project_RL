@@ -19,5 +19,5 @@ def test_vae(yaml_path: str, name: str = "vae"):
     print(f"kl_loss: {kl_loss}")
 
 
-test_vae("../configs/vae/cnn.yaml")
-test_vae("../configs/vae/maxvit.yaml")
+test_vae("../config/vae/cnn.yaml")
+test_vae("../config/vae/maxvit.yaml")

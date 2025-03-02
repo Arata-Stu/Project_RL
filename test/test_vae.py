@@ -14,7 +14,7 @@ from src.envs.car_racing import CarRacingWithInfoWrapper
 from src.utils.timers import Timer as Timer
 from src.models.VAE.VAE import get_vae
 
-@hydra.main(config_path="../configs", config_name="default", version_base="1.2")
+@hydra.main(config_path="../config", config_name="default", version_base="1.2")
 def main(config: DictConfig):
     OmegaConf.to_container(config, resolve=True, throw_on_missing=True)
     print("------ Configuration ------")

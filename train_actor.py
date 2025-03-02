@@ -189,7 +189,7 @@ class Trainer:
             video_tensor = video_tensor.unsqueeze(0)
             self.writer.add_video("Evaluation/Run", video_tensor, current_episode, fps=30)
 
-@hydra.main(config_path='configs', config_name='train', version_base='1.2')
+@hydra.main(config_path='config', config_name='train', version_base='1.2')
 def main(config: DictConfig):
     trainer = Trainer(config)
     trainer.train()
