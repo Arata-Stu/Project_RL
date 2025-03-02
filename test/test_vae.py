@@ -1,8 +1,6 @@
 import sys
 sys.path.append('../')
 
-import os
-os.environ["PYOPENGL_PLATFORM"] = "egl"
 import hydra
 from omegaconf import DictConfig, OmegaConf
 import cv2
@@ -46,6 +44,12 @@ def main(config: DictConfig):
     done = False
     step_count = 0
 
+    # 動画出力の設定
+    video_filename = config.video_path
+    frame_size = (width * 2, height)  # 入力画像と再構成画像を横に並べるため width * 2
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    video_writer = cv2.VideoWriter(video_filename, fourcc, 30.0, frame_size)
+
     while not done:
         if mode == "manual":
             keys = pygame.key.get_pressed()
@@ -65,6 +69,7 @@ def main(config: DictConfig):
                     pygame.quit()
                     env.close()
                     cv2.destroyAllWindows()
+                    video_writer.release()
                     return
             clock.tick(30)
         
@@ -87,10 +92,16 @@ def main(config: DictConfig):
         cv2.imshow("CarRacing", img)
         cv2.waitKey(1)
 
+        # 動画にフレームを保存
+        video_writer.write(img)
+
         # 環境をステップ実行
         obs, reward, terminated, truncated, info = env.step(action)
         done = terminated or truncated
         step_count += 1
+
+    # 動画のリソース解放
+    video_writer.release()
 
     if mode == "manual":
         pygame.quit()
