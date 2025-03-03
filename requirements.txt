@@ -12,3 +12,4 @@ gymnasium
 Box2D
 swig
 pygame
+moviepy
