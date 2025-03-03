@@ -55,7 +55,6 @@ class TD3Agent(BaseAgent):
         - `evaluate=True` の場合、確定的なアクション（探索なし）
         - `evaluate=False` の場合、ノイズを加えて探索
         """
-        state = torch.FloatTensor(state).to(self.device)
         with torch.no_grad():
             action = self.actor(state)
         action = action.cpu().numpy()[0]
