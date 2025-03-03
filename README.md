@@ -64,7 +64,7 @@ python3 test_vae.py +vae=cnn.yaml +mode=manual vae.ckpt_path=<ckpt_path>
 
 ### 3. 強化学習
 ```shell
-python3 train_actor.pyvae=cnn buffer=off_policy agent=sac \
+python3 train_actor.py vae=cnn buffer=off_policy agent=sac \
 vae.ckpt_path=./ckpts/<ckpt_path> \
 save_ckpt_dir=./ckpts/<ckpt_dir_name>/
 envs.render_mode=rgb_array
