@@ -1,20 +1,21 @@
 import os
 import cv2
 import numpy as np
+import hydra
 import pygame
-import argparse
-import gymnasium as gym
-from gymnasium.wrappers import TimeLimit
+from omegaconf import DictConfig, OmegaConf
 
-from src.envs.car_racing import CarRacingWithInfoWrapper
+from src.envs.envs import get_env
 from src.utils.timers import Timer as Timer
 
-def main(config: argparse.Namespace):
+@hydra.main(config_path="config", config_name="collect_data", version_base="1.2")
+def main(config: DictConfig):
+    print('------ Configuration ------')
+    print(OmegaConf.to_yaml(config))
+    print('---------------------------')
+
     # 環境のセットアップ
-    width, height = config.img_size, config.img_size
-    env = gym.make('CarRacing-v3', render_mode=config.render)
-    env = TimeLimit(env, max_episode_steps=config.num_steps)
-    env = CarRacingWithInfoWrapper(env, width=width, height=height)
+    env = get_env(config.envs)
 
     mode = config.mode  # 'manual' または 'random'
 
@@ -90,13 +91,4 @@ def main(config: argparse.Namespace):
         pygame.quit()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    
-    parser.add_argument("--mode", type=str, default="manual", help="manual or random")
-    parser.add_argument("--num_episodes", type=int, default=10, help="Number of episodes")
-    parser.add_argument("--num_steps", type=int, default=1000, help="Max steps per episode")
-    parser.add_argument("--output_dir", type=str, required=True, help="Directory to save images")
-    parser.add_argument("--img_size", type=int, default=64, help="Image size")
-    parser.add_argument("--render", type=str, default="human", help="Render mode: human, rgb_array, none")
-    config = parser.parse_args()
-    main(config)
+    main()
