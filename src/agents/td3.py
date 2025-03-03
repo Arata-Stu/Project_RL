@@ -102,6 +102,8 @@ class TD3Agent(BaseAgent):
         critic_loss.backward()
         self.critic_optimizer.step()
 
+        actor_loss = None  # 初期化
+
         # Actor の更新（policy_delay 回に1回）
         if self.total_iterations % self.policy_delay == 0:
             action_new = self.actor(state)
@@ -119,10 +121,9 @@ class TD3Agent(BaseAgent):
             for target_param, param in zip(self.actor_target.parameters(), self.actor.parameters()):
                 target_param.data.copy_(target_param.data * (1.0 - self.tau) + param.data * self.tau)
 
-            return {
-                "critic_loss": critic_loss.item(),
-                "actor_loss": actor_loss.item(),
-            }
+        return {
+            "critic_loss": critic_loss.item(),
+            "actor_loss": actor_loss.item() if actor_loss is not None else 0.0,  # None の場合は 0.0 を返す
+        }
 
-        return {"critic_loss": critic_loss.item()}
 
