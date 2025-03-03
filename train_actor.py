@@ -115,14 +115,26 @@ class Trainer:
                 os.makedirs(self.save_ckpt_dir, exist_ok=True)
                 if len(top_models) < 3:
                     top_models.append((episode, episode_reward))
-                    self.agent.save(f"{self.save_ckpt_dir}/best_{episode_reward:.2f}_ep_{episode}.pt", episode)
+                    model_path = f"{self.save_ckpt_dir}/best_{episode_reward:.2f}_ep_{episode}.pt"
+                    self.agent.save(model_path, episode)
                 else:
-                    min_reward = min(top_models, key=lambda x: x[1])[1]
-                    if episode_reward > min_reward:
-                        top_models = [model for model in top_models if model[1] != min_reward]
-                        top_models.append((episode, episode_reward))
-                        self.agent.save(f"{self.save_ckpt_dir}/best_{episode_reward:.2f}_ep_{episode}.pt", episode)
+                    # 現在のトップモデルの中で最小の報酬を取得
+                    min_model = min(top_models, key=lambda x: x[1])
+                    min_reward = min_model[1]
 
+                    if episode_reward > min_reward:
+                        # 古いモデルのファイルを削除
+                        old_model_path = f"{self.save_ckpt_dir}/best_{min_model[1]:.2f}_ep_{min_model[0]}.pt"
+                        if os.path.exists(old_model_path):
+                            os.remove(old_model_path)
+
+                        # リストから古いモデルを削除
+                        top_models.remove(min_model)
+
+                        # 新しいモデルを追加
+                        top_models.append((episode, episode_reward))
+                        new_model_path = f"{self.save_ckpt_dir}/best_{episode_reward:.2f}_ep_{episode}.pt"
+                        self.agent.save(new_model_path, episode)
                 print(f"Episode {episode}: Reward = {episode_reward:.2f}")
 
                 # 評価フェーズの実施
