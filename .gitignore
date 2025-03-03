@@ -1,6 +1,6 @@
 gym_env
 rl_env
-outputs
+outputs/
 runs
 datasets/
 ckpts/
