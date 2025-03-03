@@ -95,10 +95,11 @@ class Trainer:
                     if len(self.buffer) >= self.batch_size:
                         update_info = self.agent.update(self.buffer, batch_size=self.batch_size)
                         global_step = episode * self.max_steps + step
-                        self.writer.add_scalar("Loss/critic", update_info["critic_loss"], global_step)
-                        self.writer.add_scalar("Loss/actor", update_info["actor_loss"], global_step)
-                        self.writer.add_scalar("Loss/alpha", update_info["alpha_loss"], global_step)
-                        self.writer.add_scalar("Alpha", update_info["alpha"], global_step)
+
+                        # 動的に key を処理して TensorBoard に記録
+                        for key, value in update_info.items():
+                            self.writer.add_scalar(f"Loss/{key}", value, global_step)
+
 
                     obs = next_obs
 
