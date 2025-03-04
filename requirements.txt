@@ -12,4 +12,4 @@ gymnasium
 Box2D
 swig
 pygame
-moviepy
+moviepy==1.0.3
